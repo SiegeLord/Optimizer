@@ -18,7 +18,7 @@ class CRunner
 	}
 	
 	abstract
-	SResult[] RunBatch(double[][] params);
+	SResult[] RunBatch(double[][] params_batch);
 	
 	static double Run(char[][] args, bool redirect_output = true)
 	{

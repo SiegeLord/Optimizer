@@ -2,10 +2,9 @@ module normal_runner;
 
 import runner;
 
-import tango.core.ThreadPool;
 import Float = tango.text.convert.Float;
 import Integer = tango.text.convert.Integer;
-import tango.text.convert.Layout;
+import tango.text.convert.Format;
 import tango.io.Stdout;
 import tango.text.Util;
 import tango.text.Arguments;
@@ -15,65 +14,31 @@ class CNormalRunner : CRunner
 	this(Arguments args, bool verbose = true)
 	{
 		super(args(null).assigned, verbose);
-		
-		int num_threads = 1;
-		
-		if(args("jobs").assigned)
-		{
-			num_threads = Integer.toInt(args("jobs").assigned[$ - 1]);
-			if(num_threads < 1)
-				num_threads = 1;
-		}
-		
-		Pool = new typeof(Pool)(num_threads);
 	}
 	
 	override
-	SResult[] RunBatch(double[][] params)
+	SResult[] RunBatch(double[][] params_batch)
 	{
 		size_t old_len = Results.length;
-		ResultsVal.length = Results.length + params.length;
+		ResultsVal.length = Results.length + params_batch.length;
 			
-		void job(SParameterStruct job_params)
+		foreach(idx, params; params_batch)
 		{
-			scope layout = new Layout!(char);
-			
 			char[][] param_args;
-			foreach(param; job_params.Params)
+			foreach(param; params)
 			{
-				param_args ~= layout("{:e6}", param);
+				param_args ~= Format("{:e6}", param);
 			}
 			
 			auto job_ret = Run(BaseArgs ~ param_args, true);
 			
-			Results[job_params.JobId].Params = job_params.Params.dup;
-			Results[job_params.JobId].Value = job_ret;
+			Results[old_len + idx].Params = params.dup;
+			Results[old_len + idx].Value = job_ret;
 			
 			if(Verbose)
-			{
-				synchronized
-				{
-					Stdout.formatln("{:e6}: {:e6}", job_params.Params, job_ret);
-				}
-			}
+				Stdout.formatln("{:e6}: {:e6}", params, job_ret);
 		}
-		
-		foreach(idx, param; params)
-		{
-			Pool.append(&job, SParameterStruct(old_len + idx, param));
-		}
-		
-		Pool.finish();
 
 		return Results[old_len..$];
 	}
-	
-	struct SParameterStruct
-	{
-		size_t JobId;
-		double[] Params;
-	}
-	
-protected:
-	ThreadPool!(SParameterStruct) Pool;
 }

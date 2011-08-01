@@ -2,6 +2,7 @@ module main;
 
 import limits;
 import runner;
+import parallel_runner;
 import normal_runner;
 import algorithm;
 import grid;
@@ -36,7 +37,22 @@ int main(char[][] arg_str)
 		Stdout.formatln("Limit from {} to {}", limit.Min, limit.Max);
 	}*/
 	
-	auto runner = new CNormalRunner(args, verbose_arg.set);
+	int num_threads = 1;
+		
+	if(args("jobs").assigned)
+	{
+		num_threads = Integer.toInt(args("jobs").assigned[$ - 1]);
+		if(num_threads < 1)
+			num_threads = 1;
+	}
+	
+	CRunner runner;
+	
+	if(num_threads > 1)
+		runner = new CParallelRunner(args, num_threads, verbose_arg.set);
+	else
+		runner = new CNormalRunner(args, verbose_arg.set);
+		
 	auto algorithm = new CGrid(args, runner);
 	auto best = algorithm.Run(limit_arr);
 	

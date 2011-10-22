@@ -34,6 +34,8 @@ class CGrid : CAlgorithm
 			GridSize[old_len..$] = 2;
 		}
 		
+		assert(GridSize.length <= limits.length, "Dimensionality of the grid size is greater that the dimensionality of the limits");
+		
 		size_t num_grid_elements = GridSize[0];
 		foreach(sz; GridSize[1..$])
 		{
@@ -46,7 +48,7 @@ class CGrid : CAlgorithm
 		
 		size_t params_idx = 0;
 		
-		while(grid_location[0] < GridSize[0])
+		while(grid_location[limits.length - 1] < GridSize[limits.length - 1])
 		{
 			foreach(idx, ref param; params[params_idx])
 			{
@@ -55,12 +57,13 @@ class CGrid : CAlgorithm
 			
 			params_idx++;
 			grid_location[0]++;
-			for(size_t ii = limits.length - 1; ii > 0; ii--)
+			
+			for(size_t ii = 0; ii < limits.length - 1; ii++)
 			{
 				if(grid_location[ii] >= GridSize[ii])
 				{
 					grid_location[ii] = 0;
-					grid_location[ii - 1]++;
+					grid_location[ii + 1]++;
 				}
 			}
 		}

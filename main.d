@@ -16,7 +16,7 @@ int main(char[][] arg_str)
 	auto args = new Arguments;
 	auto verbose_arg = args("verbose").aliased('v');
 	auto jobs_arg = args("jobs").aliased('j').params(1);
-	auto limits_arg = args("limits").aliased('l');
+	auto limits_arg = args("limits").aliased('l').params();
 	auto algorithm_arg = args("algorithm").aliased('a').params(1).defaults("de");
 	args.parse(arg_str[1..$], true);
 

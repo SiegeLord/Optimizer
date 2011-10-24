@@ -154,24 +154,38 @@ class CDifferentialEvolution : CAlgorithm
 				
 				double[] origin_params;
 				
-				switch(Strategy)
 				{
-					default:
-					case 0:
+					size_t jj = Rand.uniformR(limits.length);
+					size_t kk = 0;
+					
+					switch(Strategy)
 					{
-						size_t jj = Rand.uniformR(limits.length);
-						size_t kk = 0;
-						
-						origin_params = parents[r1].Params;
-						
-						do
+						default:
+						case 0:
 						{
-							children[ii].Params[jj] = parents[r1].Params[jj] + Factor*(parents[r2].Params[jj]-parents[r3].Params[jj]);
-							
-							jj = (jj + 1) % limits.length;
-							kk++;
-						} while((Rand.uniformR(1.0) < Cross) && (jj < limits.length));
-						break;
+							origin_params = parents[r1].Params;
+							do
+							{
+								children[ii].Params[jj] = parents[r1].Params[jj] + Factor * (parents[r2].Params[jj] - parents[r3].Params[jj]);
+								
+								jj = (jj + 1) % limits.length;
+								kk++;
+							} while((Rand.uniformR(1.0) < Cross) && (jj < limits.length));
+							break;
+						}
+						case 1:
+						{
+							origin_params = parents[ii].Params;
+							do
+							{
+								children[ii].Params[jj] = parents[ii].Params[jj] + Factor * (Population[best_idx].Params[jj] - parents[ii].Params[jj])
+								                                                 + Factor * (parents[r2].Params[jj] - parents[r3].Params[jj]);
+								
+								jj = (jj + 1) % limits.length;
+								kk++;
+							} while((Rand.uniformR(1.0) < Cross) && (jj < limits.length));
+							break;
+						}
 					}
 				}
 				

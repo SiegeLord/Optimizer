@@ -19,24 +19,8 @@ int main(char[][] arg_str)
 	auto limits_arg = args("limits").aliased('l');
 	auto algorithm_arg = args("algorithm").aliased('a').params(1).defaults("de");
 	args.parse(arg_str[1..$], true);
-	
-	/*Stdout("null:").nl;
-	foreach(val; args(null).assigned)
-	{
-		Stdout(val).nl;
-	}*/
-	
-	/*Stdout("algorithm:").nl;
-	foreach(val; algorithm_arg.assigned)
-	{
-		Stdout(val).nl;
-	}*/
-	
+
 	auto limit_arr = ParseLimits(limits_arg.assigned);
-	/*foreach(limit; limit_arr)
-	{
-		Stdout.formatln("Limit from {} to {}", limit.Min, limit.Max);
-	}*/
 	
 	int num_threads = 1;
 		

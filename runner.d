@@ -1,12 +1,11 @@
 module runner;
 
-import algorithm;
-
 import tango.io.Stdout;
 import tango.sys.Process;
 import tango.io.stream.Lines;
 import tango.text.Util;
 import tango.core.Exception;
+import tango.math.random.Random;
 import Float = tango.text.convert.Float;
 
 class CRunner
@@ -15,6 +14,7 @@ class CRunner
 	{
 		BaseArgs = base_args;
 		Verbose = verbose;
+		Rand = new Random();
 	}
 	
 	abstract
@@ -95,7 +95,7 @@ class CRunner
 		return Results[min_idx];
 	}
 	
-	CAlgorithm Algorithm;
+	Random Rand;
 protected:
 	SResult[] ResultsVal;
 	char[][] BaseArgs;

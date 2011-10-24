@@ -10,9 +10,9 @@ import Integer = tango.text.convert.Integer;
 
 class CGrid : CAlgorithm
 {
-	this(Arguments args, CRunner runner)
+	this(Arguments args, CRunner runner, bool verbose)
 	{
-		super(runner);
+		super(runner, verbose);
 		
 		foreach(grid_str; args("grid_size").assigned)
 		{

@@ -6,6 +6,7 @@ import parallel_runner;
 import normal_runner;
 import algorithm;
 import grid;
+import de;
 
 import tango.io.Stdout;
 import tango.text.Arguments;
@@ -16,7 +17,7 @@ int main(char[][] arg_str)
 	auto verbose_arg = args("verbose").aliased('v');
 	auto jobs_arg = args("jobs").aliased('j').params(1);
 	auto limits_arg = args("limits").aliased('l');
-	auto algorithm_arg = args("algorithm").aliased('a').params(1).defaults("grid");
+	auto algorithm_arg = args("algorithm").aliased('a').params(1).defaults("de");
 	args.parse(arg_str[1..$], true);
 	
 	/*Stdout("null:").nl;
@@ -53,7 +54,17 @@ int main(char[][] arg_str)
 	else
 		runner = new CNormalRunner(args, verbose_arg.set);
 		
-	auto algorithm = new CGrid(args, runner);
+	CAlgorithm algorithm;
+	switch(algorithm_arg.assigned[0])
+	{
+		case "grid":
+			algorithm = new CGrid(args, runner, verbose_arg.set);
+			break;
+		default:
+		case "de":
+			algorithm = new CDifferentialEvolution(args, runner, verbose_arg.set);
+			break;
+	}
 	auto best = algorithm.Run(limit_arr);
 	
 	Stdout.formatln("Minimum at {:e6} with value of {:e6}.", best.Params, best.Value);

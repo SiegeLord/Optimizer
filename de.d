@@ -14,11 +14,11 @@ class CDifferentialEvolution : CAlgorithm
 {
 	static void RegisterArguments(Arguments args)
 	{
-		args("ge_strategy").params(1);
-		args("ge_maxgen").params(1);
-		args("ge_popsize").params(1);
-		args("ge_factor").params(1);
-		args("ge_cross").params(1);
+		args("de_strategy").params(1);
+		args("de_maxgen").params(1);
+		args("de_popsize").params(1);
+		args("de_factor").params(1);
+		args("de_cross").params(1);
 	}
 	
 	this(Arguments args, CRunner runner, bool verbose)
@@ -34,7 +34,7 @@ class CDifferentialEvolution : CAlgorithm
 				return null;
 		}
 		
-		char[] str = get_last("ge_strategy");
+		char[] str = get_last("de_strategy");
 		if(str !is null)
 		{
 			auto strat = Integer.toInt(str);
@@ -43,7 +43,7 @@ class CDifferentialEvolution : CAlgorithm
 			Strategy = strat;
 		}
 			
-		str = get_last("ge_maxgen");
+		str = get_last("de_maxgen");
 		if(str !is null)
 		{
 			auto maxgen = Integer.toInt(str);
@@ -52,7 +52,7 @@ class CDifferentialEvolution : CAlgorithm
 			MaxGen = maxgen;
 		}
 		
-		str = get_last("ge_popsize");
+		str = get_last("de_popsize");
 		if(str !is null)
 		{
 			auto popsize = Integer.toInt(str);
@@ -61,7 +61,7 @@ class CDifferentialEvolution : CAlgorithm
 			PopSize = popsize;
 		}
 		
-		str = get_last("ge_factor");
+		str = get_last("de_factor");
 		if(str !is null)
 		{
 			auto factor = Float.toFloat(str);
@@ -72,7 +72,7 @@ class CDifferentialEvolution : CAlgorithm
 			Factor = factor;
 		}
 		
-		str = get_last("ge_cross");
+		str = get_last("de_cross");
 		if(str !is null)
 		{
 			auto cross = Float.toFloat(str);

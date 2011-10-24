@@ -1,0 +1,31 @@
+^^^^^^^^^^^^^^^^^
+&   Optimizer   &
+vvvvvvvvvvvvvvvvv
+
+0. Table of Contents
+~~~~~~~~~~~~~~~~~~~~
+
+1. About
+2. Compiling
+
+1. About
+~~~~~~~~
+
+Optimizer is a simple command line function minimization software. Given a program that can accept numerical arguments and output a numerical value, optimizer will vary the arguments in an attempt to minimize the numerical value the program outputs. Use the --help command to see what options are available. As an example, the program implementing the Rosenbrock function is included. After compiling it and the main optimizer executable you can try it out like so:
+
+./optimizer -v -l=-5:5 -l=-5:5 --de_maxgen=50 -- ./rosenbrock
+
+It should find the global minimum of that function near at [1,1].
+
+2. Compiling
+~~~~~~~~~~~~
+
+Requirements:
+A D1 compiler (ldc is what's in the build script)
+Python 2 (for the build script)
+Tango (trunk version)
+
+To compile, run:
+./build.py
+
+Alternatively, just pass all the files into a D1 compile of your choice.

@@ -1,3 +1,7 @@
+/*
+ * Code adapted from C code by Rainer Storn, available at: http://www.icsi.berkeley.edu/~storn/code.html
+ */
+
 module de;
 
 import algorithm;

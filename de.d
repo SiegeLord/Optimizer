@@ -12,13 +12,22 @@ import Float = tango.text.convert.Float;
 
 class CDifferentialEvolution : CAlgorithm
 {
+	static void RegisterArguments(Arguments args)
+	{
+		args("ge_strategy").params(1);
+		args("ge_maxgen").params(1);
+		args("ge_popsize").params(1);
+		args("ge_factor").params(1);
+		args("ge_cross").params(1);
+	}
+	
 	this(Arguments args, CRunner runner, bool verbose)
 	{
 		super(runner, verbose);
 		
 		char[] get_last(char[] name)
 		{
-			auto arr = args[name].assigned;
+			auto arr = args(name).assigned;
 			if(arr.length)
 				return arr[$ - 1];
 			else

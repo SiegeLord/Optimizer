@@ -18,7 +18,15 @@ int main(char[][] arg_str)
 	auto jobs_arg = args("jobs").aliased('j').params(1);
 	auto limits_arg = args("limits").aliased('l').params();
 	auto algorithm_arg = args("algorithm").aliased('a').params(1).defaults("de");
-	args.parse(arg_str[1..$], true);
+	
+	CDifferentialEvolution.RegisterArguments(args);
+	CGrid.RegisterArguments(args);
+	
+	if(!args.parse(arg_str[1..$], false))
+	{
+		Stderr(args.errors(&Stderr.layout.sprint));
+		return -1;
+	}
 
 	auto limit_arr = ParseLimits(limits_arg.assigned);
 	

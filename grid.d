@@ -10,6 +10,11 @@ import Integer = tango.text.convert.Integer;
 
 class CGrid : CAlgorithm
 {
+	static void RegisterArguments(Arguments args)
+	{
+		args("grid_size").params();
+	}
+	
 	this(Arguments args, CRunner runner, bool verbose)
 	{
 		super(runner, verbose);

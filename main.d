@@ -7,6 +7,7 @@ import normal_runner;
 import algorithm;
 import grid;
 import de;
+import help;
 
 import tango.io.Stdout;
 import tango.text.Arguments;
@@ -18,13 +19,15 @@ int main(char[][] arg_str)
 	auto jobs_arg = args("jobs").aliased('j').params(1);
 	auto limits_arg = args("limits").aliased('l').params();
 	auto algorithm_arg = args("algorithm").aliased('a').params(1).defaults("de");
+	auto help_arg = args("help").aliased('h').halt();
 	
 	CDifferentialEvolution.RegisterArguments(args);
 	CGrid.RegisterArguments(args);
 	
-	if(!args.parse(arg_str[1..$], false))
+	if(!args.parse(arg_str[1..$], false) || help_arg.set)
 	{
 		Stderr(args.errors(&Stderr.layout.sprint));
+		Stdout(Help);
 		return -1;
 	}
 

@@ -24,6 +24,9 @@ class CParallelRunner : CRunner
 	{
 		size_t old_len = Results.length;
 		ResultsVal.length = Results.length + params_batch.length;
+		
+		if(Verbose)
+			Stdout.formatln("Running batch of {}:", params_batch.length);
 			
 		void job(SParameterStruct job_params)
 		{
@@ -44,7 +47,7 @@ class CParallelRunner : CRunner
 			{
 				synchronized
 				{
-					Stdout.formatln("{:e6}: {:e6}", job_params.Params, job_ret);
+					Stdout.formatln("\t{:e6}: {:e6}", job_params.Params, job_ret);
 				}
 			}
 		}
@@ -55,6 +58,9 @@ class CParallelRunner : CRunner
 		}
 		
 		Pool.finish();
+		
+		if(Verbose)
+			Stdout.nl;
 
 		return Results[old_len..$];
 	}

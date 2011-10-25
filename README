@@ -25,7 +25,12 @@ A D1 compiler (ldc is what's in the build script)
 Python 2 (for the build script)
 Tango (trunk version)
 
+First, look inside the build.py file if you need to modify anything. Two things to look at are 'd_compiler' and 'install_prefix'.
+
 To compile, run:
 ./build.py
+
+To install, run:
+./build.py install
 
 Alternatively, just pass all the files into a D1 compile of your choice.

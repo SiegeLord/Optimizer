@@ -42,7 +42,7 @@ int main(char[][] arg_str)
 	CDifferentialEvolution.RegisterArguments(args);
 	CGrid.RegisterArguments(args);
 	
-	if(!args.parse(arg_str[1..$], false) || help_arg.set)
+	if(!args.parse(arg_str[1..$], false) || help_arg.set || args(null).assigned.length == 0)
 	{
 		Stderr(args.errors(&Stderr.layout.sprint));
 		Stdout(Help);

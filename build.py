@@ -2,9 +2,13 @@
 
 d_compiler = 'ldc'
 optimizer_files = ['main.d', 'de.d', 'grid.d', 'help.d', 'algorithm.d', 'limits.d', 'normal_runner.d', 'parallel_runner.d', 'runner.d']
+install_prefix = '/usr/local/'
 
 def example():
 	dbuild(['rosenbrock.d'], 'rosenbrock', '-unittest')
+
+def install():
+	cp(['optimizer'], install_prefix + 'bin/')
 
 def def_action():
 	dbuild(optimizer_files, 'optimizer', '-unittest')
@@ -30,7 +34,7 @@ from subprocess import call, Popen
 from string import join
 from glob import glob
 from os import remove
-from shutil import rmtree
+from shutil import rmtree, copy
 
 try:
 	a = Popen('xfbuild')
@@ -46,6 +50,10 @@ def rm(file_list):
 			remove(s)
 		except:
 			pass
+
+def cp(file_list, dest):
+	for s in file_list:
+		copy(s, dest)
 
 def rmdir(dir_list):
 	for s in dir_list:

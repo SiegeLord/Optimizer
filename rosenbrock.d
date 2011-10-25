@@ -1,3 +1,5 @@
+module rosenbrock;
+
 import tango.io.Stdout;
 import tango.math.Math;
 import tango.core.Exception;

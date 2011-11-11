@@ -22,15 +22,20 @@ It should find the global minimum of that function near at [1,1].
 
 Requirements:
 A D1 compiler (ldc is what's in the build script)
-Python 2 (for the build script)
 Tango (trunk version)
+Optional:
+xfbuild
 
-First, look inside the build.py file if you need to modify anything. Two things to look at are 'd_compiler' and 'install_prefix'.
+First, look inside the Makefile file if you need to modify anything. Two things to look at are 'DC' and 'INSTALL_PREFIX'.
 
 To compile, run:
-./build.py
+make
 
 To install, run:
-./build.py install
+make install
 
-Alternatively, just pass all the files into a D1 compile of your choice.
+To compile the example (rosenbrock program mentioned above), run:
+make example
+
+To clean up, run:
+make clean

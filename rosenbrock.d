@@ -14,6 +14,8 @@ void main(char[][] args)
 	
 	if(args.length < 3)
 		error();
+		
+	Stdout("This line is ignored").nl;
 	
 	try
 	{

@@ -42,17 +42,20 @@ class CRunner
 		if(redirect_output)
 		{
 			scope lines = new Lines!(char)(proc.stdout);
+			char[] last_line;
 			foreach(line; lines)
 			{
-				try
-				{
-					ret = Float.toFloat(line);
-				}
-				catch(IllegalArgumentException e)
-				{
-					throw new Exception("Running '" ~ join(args, " ") ~ "' yielded an uninterpretable output '" ~ line ~ "'");
-				}
-				break;
+				if(line != "")
+					last_line = line;
+			}
+			
+			try
+			{
+				ret = Float.toFloat(last_line);
+			}
+			catch(IllegalArgumentException e)
+			{
+				throw new Exception("Running '" ~ join(args, " ") ~ "' yielded an uninterpretable output '" ~ last_line ~ "'");
 			}
 		}
 		

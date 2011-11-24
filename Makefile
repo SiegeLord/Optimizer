@@ -23,7 +23,7 @@ $(EXAMPLE_NAME) : $(EXAMPLE_FILES)
 ifeq ($(XFBUILD),)
 	$(DC) -of$(EXAMPLE_NAME) -od=".objs_$(EXAMPLE_NAME)" $(D_FLAGS) $(EXAMPLE_FILES)
 else
-	$(XFBUILD) +D=".deps_$(EXAMPLE_NAME)" +O=".objs_$(EXAMPLE_NAME)" +threads=6 +q +o$(EXAMPLE_NAME) +c$(DC) +x$(DC) +xtango $(EXAMPLE_FILES) $(DFLAGS)
+	$(XFBUILD) +D=".deps_$(EXAMPLE_NAME)" +O=".objs_$(EXAMPLE_NAME)" +threads=6 +q +o$(EXAMPLE_NAME) +c$(DC) +x$(DC) +xtango $(EXAMPLE_FILES) $(D_FLAGS)
 	rm -f *.rsp
 endif
 
@@ -31,7 +31,7 @@ $(OPTIMIZER_NAME) : $(OPTIMIZER_FILES)
 ifeq ($(XFBUILD),)
 	$(DC) -of$(OPTIMIZER_NAME) -od=".objs_$(OPTIMIZER_NAME)" $(D_FLAGS) $(OPTIMIZER_FILES)
 else
-	$(XFBUILD) +D=".deps_$(OPTIMIZER_NAME)" +O=".objs_$(OPTIMIZER_NAME)" +threads=6 +q +o$(OPTIMIZER_NAME) +c$(DC) +x$(DC) +xtango $(OPTIMIZER_FILES) $(DFLAGS)
+	$(XFBUILD) +D=".deps_$(OPTIMIZER_NAME)" +O=".objs_$(OPTIMIZER_NAME)" +threads=6 +q +o$(OPTIMIZER_NAME) +c$(DC) +x$(DC) +xtango $(OPTIMIZER_FILES) $(D_FLAGS)
 	rm -f *.rsp
 endif
 

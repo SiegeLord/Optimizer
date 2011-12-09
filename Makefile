@@ -1,5 +1,5 @@
 DC              := ldc
-D_FLAGS         := -unittest
+D_FLAGS         := -g -unittest
 INSTALL_PREFIX  := /usr/local
 XFBUILD         := $(shell which xfbuild)
 EXAMPLE_FILES   := rosenbrock.d

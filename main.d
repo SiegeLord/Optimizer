@@ -20,8 +20,6 @@ module main;
 
 import limits;
 import runner;
-import parallel_runner;
-import normal_runner;
 import algorithm;
 import grid;
 import de;
@@ -60,12 +58,7 @@ int main(char[][] arg_str)
 			num_threads = 1;
 	}
 	
-	CRunner runner;
-	
-	if(num_threads > 1)
-		runner = new CParallelRunner(args, num_threads, verbose_arg.set);
-	else
-		runner = new CNormalRunner(args, verbose_arg.set);
+	auto runner = new CRunner(args, num_threads, verbose_arg.set);
 		
 	CAlgorithm algorithm;
 	switch(algorithm_arg.assigned()[0])

@@ -19,7 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 module algorithm;
 
 import runner;
-import normal_runner;
 import limits;
 
 import tango.math.random.Random;

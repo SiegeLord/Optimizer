@@ -1,66 +1,91 @@
 module runner;
 
-import tango.io.Stdout;
-import tango.sys.Process;
-import tango.io.stream.Lines;
-import tango.text.Util;
-import tango.core.Exception;
+import tango.math.Math;
 import tango.math.random.Random;
 import Float = tango.text.convert.Float;
+import Integer = tango.text.convert.Integer;
+import tango.text.convert.Layout;
+import tango.io.Stdout;
+import tango.io.stream.Lines;
+import tango.text.Util;
+import tango.text.Arguments;
+import tango.text.convert.Format;
+import tango.sys.Process;
+import tango.io.device.File;
+import tango.core.Exception;
 
 class CRunner
 {
-	this(const(char[])[] base_args, bool verbose)
+	this(Arguments args, size_t num_threads, bool verbose)
 	{
-		BaseArgs = base_args;
+		Processes.length = num_threads;
+		
+		foreach(ref proc; Processes)
+		{
+			proc = new Process(true, args(null).assigned());
+			proc.setRedirect(Redirect.Output);
+		}
+		
+		ProcName = Processes[0].programName;
+		ProcArgs = Processes[0].args();
+		
 		Verbose = verbose;
 		Rand = new Random();
 	}
 	
-	abstract
-	SResult[] RunBatch(double[][] params_batch);
-	
-	static double Run(const(char[])[] args, bool redirect_output = true)
+	SResult[] RunBatch(double[][] params_batch)
 	{
-		double ret = 0;
+		size_t old_len = Results.length;
+		ResultsVal.length = Results.length + params_batch.length;
 		
-		scope proc = new Process(true, args);
+		if(Verbose)
+			Stdout.formatln("Running batch of {}:", params_batch.length);
 		
-		if(redirect_output)
-			proc.setRedirect(Redirect.Output);
-		else
-			proc.setRedirect(Redirect.None);
-
-		proc.execute();
-		auto status = proc.wait();
-		scope(exit) proc.close();
-		
-		if(status.reason != 0 || status.status != 0)
+		size_t res_idx = 0;
+		while(params_batch.length)
 		{
-			throw new Exception("Error running '" ~ join(args, " ").idup ~ "':\n" ~ status.toString().idup);
-		}
-		
-		if(redirect_output)
-		{
-			scope lines = new Lines!(char)(proc.stdout);
-			const(char)[] last_line;
-			foreach(line; lines)
+			auto left = min(params_batch.length, Processes.length);
+			
+			foreach(idx, proc; Processes[0..left])
 			{
-				if(line != "")
-					last_line = line;
+				const(char)[][] param_args;
+				foreach(param; params_batch[idx])
+				{
+					param_args ~= Format("{:e6}", param);
+				}
+				
+				proc.setArgs(ProcName, ProcArgs ~ param_args);
+				proc.execute();
 			}
 			
-			try
+			foreach(proc; Processes[0..left])
 			{
-				ret = Float.toFloat(last_line);
+				auto status = proc.wait();
+				if(status.reason != 0 || status.status != 0)
+				{
+					throw new Exception("Error running '" ~ proc.programName.idup ~ join(proc.args(), " ").idup ~ "':\n" ~ status.toString().idup);
+				}
 			}
-			catch(IllegalArgumentException e)
+			
+			foreach(idx, proc; Processes[0..left])
 			{
-				throw new Exception("Running '" ~ join(args, " ").idup ~ "' yielded an uninterpretable output '" ~ last_line.idup ~ "'");
+				auto job_ret = ParseProcessOutput(proc);
+				Results[old_len + res_idx].Params = params_batch[idx].dup;
+				Results[old_len + res_idx].Value = job_ret;
+			
+				if(Verbose)
+					Stdout.formatln("\t{:e6}: {:e6}", params_batch[idx], job_ret);
+				
+				res_idx++;
 			}
+			
+			params_batch = params_batch[left..$];
 		}
 		
-		return ret;
+		if(Verbose)
+			Stdout.nl;
+
+		return Results[old_len..$];
 	}
 	
 	struct SResult
@@ -99,9 +124,33 @@ class CRunner
 		return Results[min_idx];
 	}
 	
+	static double ParseProcessOutput(Process proc)
+	{
+		scope lines = new Lines!(char)(proc.stdout);
+		const(char)[] last_line;
+		foreach(line; lines)
+		{
+			if(line != "")
+				last_line = line;
+		}
+		
+		try
+		{
+			return Float.toFloat(last_line);
+		}
+		catch(IllegalArgumentException e)
+		{
+			throw new Exception("Running '" ~ proc.programName.idup ~ join(proc.args(), " ").idup ~ "' yielded an uninterpretable output '" ~ last_line.idup ~ "'");
+		}
+		assert(0);
+	}
+	
 	Random Rand;
 protected:
 	SResult[] ResultsVal;
-	const(char[])[] BaseArgs;
 	bool Verbose = true;
+	
+	Process[] Processes;
+	const(char)[] ProcName;
+	const(char[])[] ProcArgs;
 }

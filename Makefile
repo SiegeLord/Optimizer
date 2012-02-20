@@ -6,7 +6,7 @@ XFBUILD         := $(shell which xfbuild)
 EXAMPLE_FILES   := rosenbrock.d
 EXAMPLE_NAME    := rosenbrock
 OPTIMIZER_NAME  := optimizer
-OPTIMIZER_FILES := main.d de.d grid.d help.d algorithm.d limits.d normal_runner.d parallel_runner.d runner.d
+OPTIMIZER_FILES := main.d de.d grid.d help.d algorithm.d limits.d runner.d
 
 # Compiles a D program
 # $1 - program name

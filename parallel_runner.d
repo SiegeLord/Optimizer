@@ -75,7 +75,7 @@ class CParallelRunner : CRunner
 			Pool.append(&job, SParameterStruct(old_len + idx, params));
 		}
 		
-		Pool.finish();
+		Pool.wait();
 		
 		if(Verbose)
 			Stdout.nl;

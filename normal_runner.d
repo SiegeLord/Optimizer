@@ -1,6 +1,6 @@
 /*
 Optimizer, a command line function minimization software.
-Copyright (C) 2011  Pavel Sountsov
+Copyright (C) 2011-2012  Pavel Sountsov
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ class CNormalRunner : CRunner
 {
 	this(Arguments args, bool verbose = true)
 	{
-		super(args(null).assigned, verbose);
+		super(args(null).assigned(), verbose);
 	}
 	
 	override
@@ -45,7 +45,7 @@ class CNormalRunner : CRunner
 			
 		foreach(idx, params; params_batch)
 		{
-			char[][] param_args;
+			const(char)[][] param_args;
 			foreach(param; params)
 			{
 				param_args ~= Format("{:e6}", param);

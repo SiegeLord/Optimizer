@@ -21,10 +21,10 @@ It should find the global minimum of that function near at [1,1].
 ~~~~~~~~~~~~
 
 Requirements:
-A D1 compiler (ldc is what's in the build script)
-Tango (trunk version)
+A D2 compiler (ldc2 is what's in the build script)
+TangoD2 (you can get the most recent version from here: https://github.com/SiegeLord/Tango-D2 )
 Optional:
-xfbuild
+xfbuild (a D2 port is available here: https://github.com/SiegeLord/xfbuild )
 
 First, look inside the Makefile file if you need to modify anything. Two things to look at are 'DC' and 'INSTALL_PREFIX'.
 

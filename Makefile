@@ -1,5 +1,6 @@
-DC              := ldc
-D_FLAGS         := -g -unittest
+DC              := ldc2
+DCOMPILER       := ldc
+D_FLAGS         := -g -unittest -w -wi -property -L-ltango-$(DCOMPILER)
 INSTALL_PREFIX  := /usr/local
 XFBUILD         := $(shell which xfbuild)
 EXAMPLE_FILES   := rosenbrock.d
@@ -16,7 +17,7 @@ ifeq ($(XFBUILD),)
     endef
 else
     define d_build
-        $(XFBUILD) +D=".deps_$1" +O=".objs_$1" +threads=6 +q +o$1 +c$(DC) +x$(DC) +xtango $2 $(D_FLAGS)
+        $(XFBUILD) +D=".deps_$1" +O=".objs_$1" +threads=6 +q +o$1 +c$(DC) +x$(DCOMPILER) +xcore +xtango $2 $(D_FLAGS)
         rm -f *.rsp
     endef
 endif

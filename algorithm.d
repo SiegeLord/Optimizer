@@ -1,6 +1,6 @@
 /*
 Optimizer, a command line function minimization software.
-Copyright (C) 2011  Pavel Sountsov
+Copyright (C) 2011-2012  Pavel Sountsov
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ class CAlgorithm
 	abstract
 	CRunner.SResult Run(SLimits[] limits);
 	
+	@property
 	Random Rand()
 	{
 		return Runner.Rand;

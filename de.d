@@ -1,6 +1,6 @@
 /*
 Optimizer, a command line function minimization software.
-Copyright (C) 2011  Pavel Sountsov
+Copyright (C) 2011-2012  Pavel Sountsov
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -47,16 +47,16 @@ class CDifferentialEvolution : CAlgorithm
 	{
 		super(runner, verbose);
 		
-		char[] get_last(char[] name)
+		const(char)[] get_last(const(char)[] name)
 		{
-			auto arr = args(name).assigned;
+			auto arr = args(name).assigned();
 			if(arr.length)
 				return arr[$ - 1];
 			else
 				return null;
 		}
 		
-		char[] str = get_last("de_strategy");
+		auto str = get_last("de_strategy");
 		if(str !is null)
 		{
 			auto strat = Integer.toInt(str);

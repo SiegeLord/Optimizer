@@ -9,7 +9,7 @@ void main(char[][] args)
 {
 	void error()
 	{
-		throw new Exception("Need 2 numerical arguments. E.g. " ~ args[0] ~ " 1 1");
+		throw new Exception("Need 2 numerical arguments. E.g. " ~ args[0].idup ~ " 1 1");
 	}
 	
 	if(args.length < 3)

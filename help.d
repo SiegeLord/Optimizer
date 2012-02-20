@@ -1,6 +1,6 @@
 /*
 Optimizer, a command line function minimization software.
-Copyright (C) 2011  Pavel Sountsov
+Copyright (C) 2011-2012  Pavel Sountsov
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module help;
 
-const char[] Help = 
+const immutable(char)[] Help = 
 `Optimizer, a command line function minimization software.
-Copyright (C) 2011 Pavel Sountsov.
+Copyright (C) 2011-2012 Pavel Sountsov.
 
 Usage: optimizer [OPTION]... [ALGORITHM_OPTION]... 
                  [--] COMMAND [COMMAND_OPTIONS]...

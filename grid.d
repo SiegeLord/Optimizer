@@ -1,6 +1,6 @@
 /*
 Optimizer, a command line function minimization software.
-Copyright (C) 2011  Pavel Sountsov
+Copyright (C) 2011-2012  Pavel Sountsov
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ class CGrid : CAlgorithm
 	{
 		super(runner, verbose);
 		
-		foreach(grid_str; args("grid_size").assigned)
+		foreach(grid_str; args("grid_size").assigned())
 		{
 			int grid_size = Integer.toInt(grid_str);
 			if(grid_size < 2)

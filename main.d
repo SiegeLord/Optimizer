@@ -1,6 +1,6 @@
 /*
 Optimizer, a command line function minimization software.
-Copyright (C) 2011  Pavel Sountsov
+Copyright (C) 2011-2012  Pavel Sountsov
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -42,20 +42,20 @@ int main(char[][] arg_str)
 	CDifferentialEvolution.RegisterArguments(args);
 	CGrid.RegisterArguments(args);
 	
-	if(!args.parse(arg_str[1..$], false) || help_arg.set || args(null).assigned.length == 0)
+	if(!args.parse(arg_str[1..$], false) || help_arg.set || args(null).assigned().length == 0)
 	{
 		Stderr(args.errors(&Stderr.layout.sprint));
 		Stdout(Help);
 		return -1;
 	}
 
-	auto limit_arr = ParseLimits(limits_arg.assigned);
+	auto limit_arr = ParseLimits(limits_arg.assigned());
 	
 	int num_threads = 1;
 		
-	if(args("jobs").assigned)
+	if(args("jobs").assigned())
 	{
-		num_threads = Integer.toInt(args("jobs").assigned[$ - 1]);
+		num_threads = Integer.toInt(args("jobs").assigned()[$ - 1]);
 		if(num_threads < 1)
 			num_threads = 1;
 	}
@@ -68,7 +68,7 @@ int main(char[][] arg_str)
 		runner = new CNormalRunner(args, verbose_arg.set);
 		
 	CAlgorithm algorithm;
-	switch(algorithm_arg.assigned[0])
+	switch(algorithm_arg.assigned()[0])
 	{
 		case "grid":
 			algorithm = new CGrid(args, runner, verbose_arg.set);

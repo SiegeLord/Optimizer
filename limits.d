@@ -1,6 +1,6 @@
 /*
 Optimizer, a command line function minimization software.
-Copyright (C) 2011  Pavel Sountsov
+Copyright (C) 2011-2012  Pavel Sountsov
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ struct SLimits
 	double Max = 1;
 }
 
-SLimits[] ParseLimits(char[][] desc)
+SLimits[] ParseLimits(const(char[])[] desc)
 {
 	auto ret = new SLimits[](desc.length);
 	
@@ -39,7 +39,7 @@ SLimits[] ParseLimits(char[][] desc)
 	{
 		void parse_error()
 		{
-			throw new Exception("'" ~ limit ~ "' parameter limits are invalid, expected limits formatted like this: 'min:max'.");
+			throw new Exception("'" ~ limit.idup ~ "' parameter limits are invalid, expected limits formatted like this: 'min:max'.");
 		}
 		
 		auto colon_idx = locate(limit, ':');
@@ -58,7 +58,7 @@ SLimits[] ParseLimits(char[][] desc)
 		
 		if(ret[idx].Min >= ret[idx].Max)
 		{
-			throw new Exception("'" ~ limit ~ "' parameter limits are invalid, minimum should be smaller than the maximum.");
+			throw new Exception("'" ~ limit.idup ~ "' parameter limits are invalid, minimum should be smaller than the maximum.");
 		}
 	}
 	

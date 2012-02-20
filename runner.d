@@ -10,7 +10,7 @@ import Float = tango.text.convert.Float;
 
 class CRunner
 {
-	this(char[][] base_args, bool verbose)
+	this(const(char[])[] base_args, bool verbose)
 	{
 		BaseArgs = base_args;
 		Verbose = verbose;
@@ -20,7 +20,7 @@ class CRunner
 	abstract
 	SResult[] RunBatch(double[][] params_batch);
 	
-	static double Run(char[][] args, bool redirect_output = true)
+	static double Run(const(char[])[] args, bool redirect_output = true)
 	{
 		double ret = 0;
 		
@@ -31,18 +31,19 @@ class CRunner
 		else
 			proc.setRedirect(Redirect.None);
 
-		proc.execute;
-		auto status = proc.wait;
+		proc.execute();
+		auto status = proc.wait();
+		scope(exit) proc.close();
 		
 		if(status.reason != 0 || status.status != 0)
 		{
-			throw new Exception("Error running '" ~ join(args, " ") ~ "':\n" ~ status.toString());
+			throw new Exception("Error running '" ~ join(args, " ").idup ~ "':\n" ~ status.toString().idup);
 		}
 		
 		if(redirect_output)
 		{
 			scope lines = new Lines!(char)(proc.stdout);
-			char[] last_line;
+			const(char)[] last_line;
 			foreach(line; lines)
 			{
 				if(line != "")
@@ -55,11 +56,9 @@ class CRunner
 			}
 			catch(IllegalArgumentException e)
 			{
-				throw new Exception("Running '" ~ join(args, " ") ~ "' yielded an uninterpretable output '" ~ last_line ~ "'");
+				throw new Exception("Running '" ~ join(args, " ").idup ~ "' yielded an uninterpretable output '" ~ last_line.idup ~ "'");
 			}
 		}
-		
-		proc.close;
 		
 		return ret;
 	}
@@ -75,11 +74,13 @@ class CRunner
 		ResultsVal ~= res;
 	}
 	
+	@property
 	SResult[] Results()
 	{
 		return ResultsVal;
 	}
 	
+	@property
 	SResult Minimum()
 	{
 		assert(Results.length > 0);
@@ -101,6 +102,6 @@ class CRunner
 	Random Rand;
 protected:
 	SResult[] ResultsVal;
-	char[][] BaseArgs;
+	const(char[])[] BaseArgs;
 	bool Verbose = true;
 }

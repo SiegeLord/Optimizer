@@ -189,6 +189,8 @@ class CDifferentialEvolution : CAlgorithm
 					size_t jj = Rand.uniformR(limits.length);
 					size_t kk = 0;
 					
+					children[ii].Params[] = parents[ii].Params[];
+					
 					switch(Strategy)
 					{
 						default:

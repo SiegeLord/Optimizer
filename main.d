@@ -40,11 +40,19 @@ int main(char[][] arg_str)
 	CDifferentialEvolution.RegisterArguments(args);
 	CGrid.RegisterArguments(args);
 	
-	if(!args.parse(arg_str[1..$], false) || help_arg.set || args(null).assigned().length == 0)
+	if(!args.parse(arg_str[1..$], false))
 	{
-		Stderr(args.errors(&Stderr.layout.sprint));
-		Stdout(Help);
+		Stderr(args.errors(&Stderr.layout.sprint)).flush();
 		return -1;
+	}
+	if(help_arg.set)
+	{
+		Stdout(Help);
+		return 0;
+	}
+	if(args(null).assigned().length == 0)
+	{
+		Stderr("Need a program name to run.").nl;
 	}
 
 	auto limit_arr = ParseLimits(limits_arg.assigned());

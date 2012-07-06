@@ -42,17 +42,18 @@ int main(char[][] arg_str)
 	
 	if(!args.parse(arg_str[1..$], false))
 	{
+		if(help_arg.set)
+		{
+			Stdout(Help).nl;
+			return 0;
+		}
 		Stderr(args.errors(&Stderr.layout.sprint)).flush();
 		return -1;
-	}
-	if(help_arg.set)
-	{
-		Stdout(Help);
-		return 0;
 	}
 	if(args(null).assigned().length == 0)
 	{
 		Stderr("Need a program name to run.").nl;
+		return -1;
 	}
 
 	auto limit_arr = ParseLimits(limits_arg.assigned());
